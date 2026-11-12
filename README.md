@@ -1,5 +1,7 @@
 # WinT-1000
 
+ein Schwesterprojekt zu MacT-1000 (https://github.com/denkteich/MacT-1000)
+
 Version 1.5.21 · Copyright © 2026 Harald Thomas · MIT-Lizenz
 
 Terminal-Client für Windows: lokale Shell, SSH, Telnet, RDP, serielle Konsole, horizontal und vertikal teilbare Panes, Multi-Input und Multi-Paste, Makros, Datei-Browser, TFTP-/FTP-/HTTP-/SFTP-Server, gemeinsame Netzwerk-Konfiguration und Aufruf von außen.
@@ -26,6 +28,7 @@ Einstellungen, Sessions und Makros liegen bei beiden Varianten unter `%APPDATA%\
 | Bereich | Windows |
 |---|---|
 | Lokale Shell | PowerShell 7 (`pwsh`), sonst Windows PowerShell, sonst `cmd.exe`; eigene Shell in den Einstellungen |
+
 | SSH | eingebauter OpenSSH-Client (`C:\Windows\System32\OpenSSH\ssh.exe`); fehlt er: Einstellungen → System → Optionale Features → „OpenSSH-Client“ |
 | Datei-Browser | per SFTP (eigene Verbindung, fragt Passwort/Passphrase selbst ab) |
 | RDP | Remotedesktopverbindung (`mstsc.exe`) |
