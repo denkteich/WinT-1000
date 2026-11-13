@@ -1,8 +1,6 @@
 # WinT-1000
 
-ein Schwesterprojekt zu MacT-1000 (https://github.com/denkteich/MacT-1000)
-
-Version 1.5.21 · Copyright © 2026 Harald Thomas · MIT-Lizenz
+Version 1.5.22 · Copyright © 2026 Harald Thomas · MIT-Lizenz
 
 Terminal-Client für Windows: lokale Shell, SSH, Telnet, RDP, serielle Konsole, horizontal und vertikal teilbare Panes, Multi-Input und Multi-Paste, Makros, Datei-Browser, TFTP-/FTP-/HTTP-/SFTP-Server, gemeinsame Netzwerk-Konfiguration und Aufruf von außen.
 
@@ -12,7 +10,7 @@ Updates: [github.com/denkteich/WinT-1000](https://github.com/denkteich/WinT-1000
 
 | | Installierbar (Setup) | Portable |
 |---|---|---|
-| Datei | `WinT-1000-1.5.21-setup.exe` | `WinT-1000-1.5.21-portable.exe` |
+| Datei | `WinT-1000-1.5.22-setup.exe` | `WinT-1000-1.5.22-portable.exe` |
 | Installation | Assistent; Standardordner `%LOCALAPPDATA%\Programs\WinT-1000`, Ordner wählbar; Startmenü- und Desktop-Verknüpfung | keine – EXE an einen beliebigen Ort kopieren (z. B. `C:\Tools`, USB-Stick) und starten |
 | Administratorrechte | nicht nötig (Installation nur für das eigene Benutzerkonto) | nicht nötig |
 | `wint1000://`-Links | werden bei der Installation eingerichtet | im Hilfe-Dialog „Links für diese EXE einrichten“ |
@@ -28,7 +26,6 @@ Einstellungen, Sessions und Makros liegen bei beiden Varianten unter `%APPDATA%\
 | Bereich | Windows |
 |---|---|
 | Lokale Shell | PowerShell 7 (`pwsh`), sonst Windows PowerShell, sonst `cmd.exe`; eigene Shell in den Einstellungen |
-
 | SSH | eingebauter OpenSSH-Client (`C:\Windows\System32\OpenSSH\ssh.exe`); fehlt er: Einstellungen → System → Optionale Features → „OpenSSH-Client“ |
 | Datei-Browser | per SFTP (eigene Verbindung, fragt Passwort/Passphrase selbst ab) |
 | RDP | Remotedesktopverbindung (`mstsc.exe`) |
@@ -77,8 +74,32 @@ set W="%LOCALAPPDATA%\Programs\WinT-1000\WinT-1000.exe"
 - `--log DATEI`: Ausgabe ohne Farbcodes an DATEI anhängen. Vollständiger Pfad nötig, z. B. `C:\Logs\sw.log`, `\\server\freigabe\sw.log` oder `~\Logs\sw.log` (`~` = Benutzerordner); fehlende Ordner werden angelegt.
 - `--quit`: alle Ziele des Aufrufs schließen und WinT-1000 danach beenden – nur, wenn keine anderen Sessions oder Server mehr laufen.
 - `--close` und `--log` sind bei RDP nicht möglich (eigenes Programm).
-- Links: `wint1000://ssh/admin@10.0.0.1?run=show%20version&close=3`
+- Links: `wint1000://ssh/admin@10.0.0.1?run=show%20version&close=3`, `wint1000://ssh/admin@10.0.0.2?layout=core&slot=unten`
 - Vorlagen im Ordner `beispiele`: Batch-Datei und PowerShell-Skript. Für Verknüpfungen: Rechtsklick auf den Desktop → Neu → Verknüpfung → einen der Befehle als Ziel. Für zeitgesteuerte Abläufe die Aufgabenplanung mit demselben Befehl verwenden.
+
+### Feste Plätze im geteilten Fenster (ab 1.5.22)
+
+Damit mehrere getrennte Aufrufe nacheinander in dasselbe geteilte Fenster kommen – z. B. der erste oben, der nächste unten –, bekommt der Tab einen Namen und jedes Ziel einen Platz:
+
+```bat
+%W% --ssh admin@10.0.0.1 --layout core --slot oben
+%W% --ssh admin@10.0.0.2 --layout core --slot unten
+```
+
+| Option | Bedeutung |
+|---|---|
+| `--layout NAME` | Name des Layout-Tabs. Gibt es ihn noch nicht, wird er angelegt und gleich passend geteilt; leere Plätze zeigen „Wartet: unten“. Danach findet jeder Aufruf den Tab über den Namen – egal, welcher Tab oder welches Pane gerade aktiv ist. Ohne Angabe heißt das Layout „Layout“ |
+| `--slot PLATZ` | `oben`, `unten` (Raster oben/unten), `links`, `rechts` (links/rechts), `oben-links`, `oben-rechts`, `unten-links`, `unten-rechts` (2×2), `1`–`4` (Reihenfolge wie beim Lesen) oder `next` = nächster freier Platz. Englische Namen (`top`, `bottom`, `left`, `right`, `tl` …) gehen auch. Ohne Angabe: `next` |
+| `--grid RASTER` | `2h` = oben/unten, `2v` = links/rechts, `4` = 2×2. Nur nötig bei `next` oder Zahlen – sonst ergibt es sich aus dem Platz. Gilt nur beim Anlegen; ein vorhandener Layout-Tab behält sein Raster |
+| `--busy WAS` | Wenn im Platz schon eine Session läuft: `fragen` (Standard), `ersetzen` (bisherige Session beenden), `neu` (Platz zusätzlich teilen, bisherige läuft weiter), `abbrechen` (nichts öffnen) |
+
+- Frei ist ein Platz, solange er wartet oder seine Session beendet ist; beendete Sessions werden ohne Rückfrage ersetzt.
+- `next` füllt zuerst wartende, dann beendete und dann geschlossene Plätze; sind alle belegt, öffnet der Aufruf einen neuen Tab.
+- Wurde ein Platz geschlossen (auch durch `--close`), legt der nächste Aufruf für diesen Platz ihn an der richtigen Stelle wieder an. Wird der ganze Tab geschlossen, beginnt das Layout beim nächsten Aufruf von vorn.
+- In wartenden Plätzen kann man auch selbst eine Verbindung öffnen – dann ist der Platz belegt.
+- `--multi` schaltet Multi-Input für alle Bereiche des Layout-Tabs ein.
+- Mit „Tabs und Split-Layout beim Start wiederherstellen“ bleiben Layout-Name und Plätze auch nach einem Neustart erhalten.
+- Ganz ohne zusätzliche Parameter: Einstellung **Aufrufe von außen ohne Platzangabe** (oben/unten, links/rechts oder 2×2). Dann landen alle Aufrufe ohne `--split`, `--slot` oder `--layout` der Reihe nach im Layout-Tab „Aufrufe“.
 
 ## Gemeinsame Netzwerk-Konfiguration
 
@@ -86,7 +107,7 @@ WinT-1000 legt im gewählten Ordner `WinT-1000-config.json` (plus Ordner `WinT-1
 
 ## Releases auf GitHub
 
-Damit die Update-Prüfung und das automatische Update funktionieren, im Repository [denkteich/WinT-1000](https://github.com/denkteich/WinT-1000) je Version ein Release mit dem Tag `v<Version>` (z. B. `v1.5.21`) anlegen und diese Dateien anhängen:
+Damit die Update-Prüfung und das automatische Update funktionieren, im Repository [denkteich/WinT-1000](https://github.com/denkteich/WinT-1000) je Version ein Release mit dem Tag `v<Version>` (z. B. `v1.5.22`) anlegen und diese Dateien anhängen:
 
 - `WinT-1000-<Version>-setup.exe` – wird von der installierten Version automatisch geladen und installiert
 - `WinT-1000-<Version>-portable.exe` – für die portable Variante (manuell)
