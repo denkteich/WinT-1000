@@ -2,6 +2,8 @@
 
 Version 1.5.23 · Copyright © 2026 Harald Thomas · MIT-Lizenz
 
+Ein Schwesterprojekt zu MacT-1000 (https://github.com/denkteich/MacT-1000)
+
 Terminal-Client für Windows: lokale Shell, SSH, Telnet, RDP, serielle Konsole, horizontal und vertikal teilbare Panes, Multi-Input und Multi-Paste, Makros, Datei-Browser, TFTP-/FTP-/HTTP-/SFTP-Server, gemeinsame Netzwerk-Konfiguration und Aufruf von außen.
 
 Updates: [github.com/denkteich/WinT-1000](https://github.com/denkteich/WinT-1000)
