@@ -1,8 +1,6 @@
 # WinT-1000
 
-Ein Schwesterprojekt zu MacT-1000 (https://github.com/denkteich/MacT-1000)
-
-Version 1.5.22 · Copyright © 2026 Harald Thomas · MIT-Lizenz
+Version 1.5.23 · Copyright © 2026 Harald Thomas · MIT-Lizenz
 
 Terminal-Client für Windows: lokale Shell, SSH, Telnet, RDP, serielle Konsole, horizontal und vertikal teilbare Panes, Multi-Input und Multi-Paste, Makros, Datei-Browser, TFTP-/FTP-/HTTP-/SFTP-Server, gemeinsame Netzwerk-Konfiguration und Aufruf von außen.
 
@@ -12,7 +10,7 @@ Updates: [github.com/denkteich/WinT-1000](https://github.com/denkteich/WinT-1000
 
 | | Installierbar (Setup) | Portable |
 |---|---|---|
-| Datei | `WinT-1000-1.5.22-setup.exe` | `WinT-1000-1.5.22-portable.exe` |
+| Datei | `WinT-1000-1.5.23-setup.exe` | `WinT-1000-1.5.23-portable.exe` |
 | Installation | Assistent; Standardordner `%LOCALAPPDATA%\Programs\WinT-1000`, Ordner wählbar; Startmenü- und Desktop-Verknüpfung | keine – EXE an einen beliebigen Ort kopieren (z. B. `C:\Tools`, USB-Stick) und starten |
 | Administratorrechte | nicht nötig (Installation nur für das eigene Benutzerkonto) | nicht nötig |
 | `wint1000://`-Links | werden bei der Installation eingerichtet | im Hilfe-Dialog „Links für diese EXE einrichten“ |
@@ -34,6 +32,13 @@ Einstellungen, Sessions und Makros liegen bei beiden Varianten unter `%APPDATA%\
 | Seriell | COM-Ports, z. B. `COM3 115200` im Quick Connect |
 | Passwörter | werden mit der Windows-Benutzeranmeldung verschlüsselt gespeichert |
 | Menü | Datei, Bearbeiten, Makros, Ansicht, Hilfe (Einstellungen unter Datei, Über/Updates unter Hilfe) |
+
+## Datei-Browser und Kopieren (ab 1.5.23)
+
+- **Synchron mit der Shell** (Standard: an): Wechselt man im SSH-Terminal mit `cd` das Verzeichnis, wechselt der Datei-Browser automatisch mit. Schalter **⇄** in der Werkzeugleiste des Browsers, unter ⋯ oder in den Einstellungen. Erkannt wird das Verzeichnis über die Pfad-Meldung OSC 7, sonst über die Prompt-Zeile (`user@host:~/pfad$`, `root@host:/etc#`) oder den Fenstertitel. Zeigt der Prompt keinen Pfad: ⋯ → „Pfad-Meldung in der Shell einrichten (bash/zsh)“ (gilt für die laufende Shell; dauerhaft dieselbe Zeile in `~/.bashrc` bzw. `~/.zshrc` auf dem Server eintragen). Selbst im Browser navigiert bleibt die Ansicht, bis die Shell das nächste Mal das Verzeichnis wechselt; ist das Shell-Verzeichnis nicht lesbar (z. B. nach `sudo -i`), bleibt die bisherige Liste mit Hinweis stehen.
+- **Drag & Drop:** Dateien/Ordner aus dem Explorer in die Liste ziehen = Hochladen (auf einen Ordner gezogen landen sie dort). Einträge aus der Liste in den Explorer, auf den Desktop oder in eine andere App ziehen = Herunterladen: WinT-1000 lädt sie dafür erst in einen temporären Ordner; bei kleinen Dateien beginnt das Ziehen sofort, solange die Maustaste gedrückt bleibt. Wird sie vorher losgelassen (große Dateien), erscheint der Eintrag unter „Übertragungen“ mit „fertig – an das Ziel ziehen“ und lässt sich von dort ans Ziel ziehen.
+- **Direkt zur Datei springen:** In die Liste klicken und tippen – z. B. `zus` markiert den ersten Eintrag, der mit „zus“ beginnt (sonst den ersten, der „zus“ enthält); nach einer Sekunde Pause beginnt die Suche neu. ↑/↓ markieren, Enter öffnet, Rücktaste = eine Ebene höher, Esc hebt die Markierung auf.
+- **Kopieren beim Markieren:** Mit der Maus markierter Text in einem Session-Fenster landet sofort in der Zwischenablage („In die Zwischenablage kopiert“). Einstellung „Markierten Text automatisch in die Zwischenablage kopieren“, Standard an (mit 1.5.23 einmalig eingeschaltet, falls sie bisher aus war). In Programmen mit Mausbedienung (htop, mc) beim Markieren Umschalt gedrückt halten.
 
 ## Tastenkürzel
 
@@ -109,7 +114,7 @@ WinT-1000 legt im gewählten Ordner `WinT-1000-config.json` (plus Ordner `WinT-1
 
 ## Releases auf GitHub
 
-Damit die Update-Prüfung und das automatische Update funktionieren, im Repository [denkteich/WinT-1000](https://github.com/denkteich/WinT-1000) je Version ein Release mit dem Tag `v<Version>` (z. B. `v1.5.22`) anlegen und diese Dateien anhängen:
+Damit die Update-Prüfung und das automatische Update funktionieren, im Repository [denkteich/WinT-1000](https://github.com/denkteich/WinT-1000) je Version ein Release mit dem Tag `v<Version>` (z. B. `v1.5.23`) anlegen und diese Dateien anhängen:
 
 - `WinT-1000-<Version>-setup.exe` – wird von der installierten Version automatisch geladen und installiert
 - `WinT-1000-<Version>-portable.exe` – für die portable Variante (manuell)
